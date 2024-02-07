@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/helpers/target_platform.dart';
 import 'package:superbaby/my_game.dart';
+import 'package:superbaby/objects/hero.dart';
 
 final textPaint = TextPaint(
   style: const TextStyle(
@@ -15,9 +16,14 @@ final textPaint = TextPaint(
 );
 
 class GameUI extends PositionComponent with HasGameRef<MyGame> {
+  final MyHero hero;
+  GameUI(this.hero);
+
+  var screenSize = Vector2(428, 926);
+
   // Keep track of the number of bodies in the world.
   final totalBodies =
-      TextComponent(position: Vector2(5, 895), textRenderer: textPaint);
+      TextComponent(position: Vector2(5, 865), textRenderer: textPaint);
 
   final totalScore = TextComponent(textRenderer: textPaint);
 
@@ -30,7 +36,7 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
 
   // Keep track of the frames per second
   final fps =
-      FpsTextComponent(position: Vector2(5, 870), textRenderer: textPaint);
+      FpsTextComponent(position: Vector2(5, 830), textRenderer: textPaint);
 
   @override
   Future<void> onLoad() async {
@@ -48,6 +54,37 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
       },
     );
 
+    final btLeft = SpriteButtonComponent(
+      button: Assets.transparentBg,
+      buttonDown: Assets.transparentBg,
+      size: Vector2(195, screenSize.y),
+      position: Vector2(0, 0),
+      //size: Vector2(70, 70),
+      //position: Vector2(20, 800),
+      priority: 1,
+      onPressed: () {
+        if (hero.state != HeroState.dead) {
+          hero.accelerationX = -1;
+        }
+      },
+    );
+    final btRight = SpriteButtonComponent(
+      button: Assets.transparentBg,
+      buttonDown: Assets.transparentBg,
+      //size: Vector2(70, 70),
+      size: Vector2(220, screenSize.y),
+      position: Vector2(228, 0),
+      priority: 1,
+      onPressed: () {
+        if (hero.state != HeroState.dead) {
+          hero.accelerationX = 1;
+        }
+      },
+    );
+
+    add(btLeft);
+    add(btRight);
+
     add(btPause);
     add(coin);
     add(gun);
@@ -61,8 +98,8 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    totalBodies.text = 'Bodies: ${game.world.physicsWorld.bodies.length}';
-    totalScore.text = 'Score ${gameRef.score}';
+    totalBodies.text = 'Obje: ${game.world.physicsWorld.bodies.length}';
+    totalScore.text = 'Skor ${gameRef.score}';
     totalCoins.text = 'x${gameRef.coins}';
     totalBullets.text = 'x${gameRef.bullets}';
 

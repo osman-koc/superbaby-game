@@ -26,12 +26,12 @@ class PauseMenu extends StatelessWidget {
               children: [
                 SizedBox(height: height * .15),
                 const MyText(
-                  'Paused',
+                  'Durdur',
                   fontSize: 56,
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Resume',
+                  'Devam et',
                   onPressed: () {
                     game.overlays.remove('PauseMenu');
                     game.paused = false;
@@ -39,7 +39,7 @@ class PauseMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Menu',
+                  'Menü',
                   onPressed: () => context.pushAndRemoveUntil(Routes.main),
                 ),
               ],

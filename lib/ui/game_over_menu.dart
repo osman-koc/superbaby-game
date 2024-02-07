@@ -27,7 +27,7 @@ class GameOverMenu extends StatelessWidget {
               children: [
                 SizedBox(height: height * .15),
                 const MyText(
-                  'Game Over!',
+                  'Oyun Bitti!',
                   fontSize: 56,
                 ),
                 Table(
@@ -42,7 +42,7 @@ class GameOverMenu extends StatelessWidget {
                     TableRow(
                       children: [
                         const SizedBox(),
-                        const MyText('Score'),
+                        const MyText('Skor'),
                         MyText(game.score.toString()),
                         const SizedBox(),
                       ],
@@ -50,7 +50,7 @@ class GameOverMenu extends StatelessWidget {
                     TableRow(
                       children: [
                         const SizedBox(),
-                        const MyText('Best Score'),
+                        const MyText('Yüksek Skor'),
                         MyText('${HighScores.highScores[0]}'),
                         const SizedBox(),
                       ],
@@ -59,12 +59,12 @@ class GameOverMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Try Again',
+                  'Tekrar',
                   onPressed: () => context.pushAndRemoveUntil(Routes.game),
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Menu',
+                  'Menü',
                   onPressed: () => context.pushAndRemoveUntil(Routes.main),
                 ),
               ],

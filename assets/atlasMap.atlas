@@ -347,6 +347,20 @@ buttonBack
   orig: 47, 45
   offset: 0, 0
   index: -1
+buttonNext
+  rotate: false
+  xy: 585, 479
+  size: 47, 45
+  orig: 47, 45
+  offset: 0, 0
+  index: -1
+transparentBg
+  rotate: false
+  xy: 900, 479
+  size: 47, 45
+  orig: 47, 45
+  offset: 0, 0
+  index: -1
 buttonPause
   rotate: false
   xy: 536, 432

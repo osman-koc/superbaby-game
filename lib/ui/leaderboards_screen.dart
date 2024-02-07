@@ -36,7 +36,7 @@ class LeaderboardScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 const MyText(
-                  'Best Scores',
+                  'Yüksek Skorlar',
                   fontSize: 42,
                 ),
                 SizedBox(height: spacing),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:superbaby/helpers/high_scores.dart';
 import 'package:superbaby/navigation/routes.dart';
@@ -71,7 +73,7 @@ class MainMenuScreen extends StatelessWidget {
                         const SizedBox(height: 24),
                         Image.asset('assets/ui/title.png'),
                         MyText(
-                          'Best Score: ${HighScores.highScores[0]}',
+                          'En Yüksek Skor: ${HighScores.highScores[0]}',
                           fontSize: 26,
                         ),
                         Expanded(
@@ -79,20 +81,22 @@ class MainMenuScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               MyButton(
-                                'Play',
+                                'Oyna',
                                 onPressed: () =>
                                     context.pushAndRemoveUntil(Routes.game),
                               ),
                               const SizedBox(height: 40),
                               MyButton(
-                                'Rate',
-                                onPressed: () {},
+                                'Skorlar',
+                                onPressed: () =>
+                                    context.push(Routes.leaderboard),
                               ),
                               const SizedBox(height: 40),
                               MyButton(
-                                'Leaderboard',
-                                onPressed: () =>
-                                    context.push(Routes.leaderboard),
+                                'Çıkıs',
+                                onPressed: () {
+                                  exit(0);
+                                },
                               ),
                             ],
                           ),

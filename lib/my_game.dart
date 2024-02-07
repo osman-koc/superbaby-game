@@ -51,13 +51,14 @@ class MyGame extends Forge2DGame
 
   @override
   Future<void> onLoad() async {
+    hero = MyHero();
+
     // Adds a black background to the viewport
     camera.backdrop.add(Background());
-    camera.viewport.add(GameUI());
+    camera.viewport.add(GameUI(hero));
     // camera.viewfinder.anchor = Anchor.center;
 
     world.add(Floor());
-    hero = MyHero();
 
     // generateNextSectionOfWorld();
 

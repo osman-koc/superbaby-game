@@ -50,6 +50,8 @@ class MyHero extends BodyComponent<MyGame>
 
   StreamSubscription? accelerometerSubscription;
 
+  int positionCounter = 0;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -136,6 +138,12 @@ class MyHero extends BodyComponent<MyGame>
     final velocity = body.linearVelocity;
     final position = body.position;
 
+    if (position.y == 8.975005841774795) {
+      positionCounter++;
+    } else {
+      positionCounter = 0;
+    }
+
     if (velocity.y > 0.1 && state != HeroState.dead) {
       state = HeroState.fall;
     }
@@ -158,6 +166,8 @@ class MyHero extends BodyComponent<MyGame>
     } else if (position.x < 0) {
       position.x = worldSize.x;
       body.setTransform(position, 0);
+    } else if (positionCounter == 3){
+      state = HeroState.dead;
     }
 
     if (state == HeroState.jump) {

@@ -5,6 +5,7 @@ class Assets {
   static late final Sprite button;
   static late final Sprite buttonPause;
   static late final Sprite buttonBack;
+  static late final Sprite buttonNext;
 
   static late final Sprite background;
 
@@ -57,11 +58,14 @@ class Assets {
   static late final Sprite platformPinkLeft;
   static late final Sprite platformPinkRight;
 
+  static late final Sprite transparentBg;
+
   static Future<void> load() async {
     final atlas = await TextureAtlas().load('atlasMap.atlas');
     button = atlas.findSpriteByName('button')!;
     buttonPause = atlas.findSpriteByName('buttonPause')!;
     buttonBack = atlas.findSpriteByName('buttonBack')!;
+    buttonNext = atlas.findSpriteByName('buttonNext')!;
     background = atlas.findSpriteByName('background')!;
 
     heroFall = atlas.findSpriteByName('heroFall')!;
@@ -140,5 +144,7 @@ class Assets {
     platformPinkBroken = atlas.findSpriteByName('BrokenLandPiece_Pink')!;
     platformPinkLeft = atlas.findSpriteByName('HalfLandPiece_Left_Pink')!;
     platformPinkRight = atlas.findSpriteByName('HalfLandPiece_Right_Pink')!;
+
+    transparentBg = atlas.findSpriteByName('transparentBg')!;
   }
 }
