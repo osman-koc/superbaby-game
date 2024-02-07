@@ -1,0 +1,33 @@
+name: superbaby
+description: "Uçan Süper Bebek"
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+
+dependencies:
+  flame: ^1.14.0
+  flame_forge2d: ^0.16.0+4
+  flame_gdx_texture_packer: ^0.6.1
+  flutter:
+    sdk: flutter
+  sensors_plus: ^4.0.2
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_lints: ^2.0.3
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/ui/
+  fonts:
+    - family: DaveysDoodleface
+      fonts:
+        - asset: assets/fonts/DaveysDoodleface.ttf
