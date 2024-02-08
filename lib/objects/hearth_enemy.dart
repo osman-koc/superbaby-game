@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/my_game.dart';
 
@@ -35,7 +36,7 @@ class HearthEnemy extends BodyComponent<MyGame> {
 
     _position = body.position;
 
-    if (_position.x > worldSize.x) {
+    if (_position.x > GameConstants.worldSize.x) {
       body.linearVelocity = Vector2(-speed, 0);
     } else if (_position.x < 0) {
       body.linearVelocity = Vector2(speed, 0);

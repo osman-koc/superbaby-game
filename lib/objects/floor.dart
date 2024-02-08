@@ -1,4 +1,5 @@
 import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/my_game.dart';
 
 class Floor extends BodyComponent<MyGame> {
@@ -16,11 +17,11 @@ class Floor extends BodyComponent<MyGame> {
   Body createBody() {
     final bodyDef = BodyDef(
       userData: this,
-      position: Vector2(0, worldSize.y),
+      position: Vector2(0, GameConstants.worldSize.y),
       type: BodyType.static,
     );
 
-    final shape = EdgeShape()..set(Vector2.zero(), Vector2(worldSize.x, 0));
+    final shape = EdgeShape()..set(Vector2.zero(), Vector2(GameConstants.worldSize.x, 0));
     final fixtureDef = FixtureDef(shape);
     return world.createBody(bodyDef)..createFixture(fixtureDef);
   }

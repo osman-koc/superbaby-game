@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/helpers/target_platform.dart';
 import 'package:superbaby/my_game.dart';
@@ -17,9 +18,7 @@ final textPaint = TextPaint(
 
 class GameUI extends PositionComponent with HasGameRef<MyGame> {
   final MyHero hero;
-  GameUI(this.hero);
-
-  var screenSize = Vector2(428, 926);
+  GameUI(this.hero) : super();
 
   // Keep track of the number of bodies in the world.
   final totalBodies =
@@ -54,37 +53,6 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
       },
     );
 
-    final btLeft = SpriteButtonComponent(
-      button: Assets.transparentBg,
-      buttonDown: Assets.transparentBg,
-      size: Vector2(195, screenSize.y),
-      position: Vector2(0, 0),
-      //size: Vector2(70, 70),
-      //position: Vector2(20, 800),
-      priority: 1,
-      onPressed: () {
-        if (hero.state != HeroState.dead) {
-          hero.accelerationX = -1;
-        }
-      },
-    );
-    final btRight = SpriteButtonComponent(
-      button: Assets.transparentBg,
-      buttonDown: Assets.transparentBg,
-      //size: Vector2(70, 70),
-      size: Vector2(220, screenSize.y),
-      position: Vector2(228, 0),
-      priority: 1,
-      onPressed: () {
-        if (hero.state != HeroState.dead) {
-          hero.accelerationX = 1;
-        }
-      },
-    );
-
-    add(btLeft);
-    add(btRight);
-
     add(btPause);
     add(coin);
     add(gun);
@@ -103,7 +71,7 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
     totalCoins.text = 'x${gameRef.coins}';
     totalBullets.text = 'x${gameRef.bullets}';
 
-    final posX = screenSize.x - totalCoins.size.x;
+    final posX = GameConstants.screenSize.x - totalCoins.size.x;
     totalCoins.position
       ..x = posX - 5
       ..y = 5;
@@ -119,7 +87,7 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
       ..y = 8;
 
     totalScore.position
-      ..x = screenSize.x / 2 - totalScore.size.x / 2
+      ..x = GameConstants.screenSize.x / 2 - totalScore.size.x / 2
       ..y = 5;
   }
 

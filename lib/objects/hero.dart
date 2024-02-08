@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/services.dart';
+import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/helpers/target_platform.dart';
 import 'package:superbaby/my_game.dart';
@@ -160,13 +161,13 @@ class MyHero extends BodyComponent<MyGame>
     velocity.x = accelerationX * 5;
     body.linearVelocity = velocity;
 
-    if (position.x > worldSize.x) {
+    if (position.x > GameConstants.worldSize.x) {
       position.x = 0;
       body.setTransform(position, 0);
     } else if (position.x < 0) {
-      position.x = worldSize.x;
+      position.x = GameConstants.worldSize.x;
       body.setTransform(position, 0);
-    } else if (positionCounter == 3){
+    } else if (positionCounter == 3) {
       state = HeroState.dead;
     }
 
@@ -200,7 +201,7 @@ class MyHero extends BodyComponent<MyGame>
   Body createBody() {
     final bodyDef = BodyDef(
       userData: this,
-      position: Vector2(worldSize.x / 2, worldSize.y - 0.5),
+      position: Vector2(GameConstants.worldSize.x / 2, GameConstants.worldSize.y - 0.5),
       type: BodyType.dynamic,
     );
 
@@ -287,5 +288,17 @@ class MyHero extends BodyComponent<MyGame>
 
   void cancelSensor() {
     accelerometerSubscription?.cancel();
+  }
+
+  void directionSet(double positionX) {
+    if (positionX > GameConstants.screenBeginX &&
+        positionX < GameConstants.screenMiddleX) {
+      accelerationX = -1;
+    } else if (positionX > GameConstants.screenMiddleX &&
+        positionX < GameConstants.screenEndX) {
+      accelerationX = 1;
+    } else {
+      accelerationX = 0;
+    }
   }
 }

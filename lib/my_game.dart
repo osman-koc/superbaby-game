@@ -5,7 +5,10 @@ import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/input.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:superbaby/constants/game_constants.dart';
+import 'package:superbaby/constants/enums/game_state.dart';
 import 'package:superbaby/helpers/high_scores.dart';
+import 'package:superbaby/model/touch_model.dart';
 import 'package:superbaby/objects/background.dart';
 import 'package:superbaby/objects/bullet.dart';
 import 'package:superbaby/objects/cloud_enemy.dart';
@@ -18,15 +21,7 @@ import 'package:superbaby/objects/platform_pieces.dart';
 import 'package:superbaby/objects/power_up.dart';
 import 'package:superbaby/ui/game_ui.dart';
 
-final screenSize = Vector2(428, 926);
-final worldSize = Vector2(4.28, 9.26);
-
 final random = Random();
-
-enum GameState {
-  running,
-  gameOver,
-}
 
 class MyGame extends Forge2DGame
     with HasKeyboardHandlerComponents, TapCallbacks {
@@ -37,6 +32,8 @@ class MyGame extends Forge2DGame
   int bullets = 0;
   double generatedWorldHeight = 6.7;
 
+  TouchModel? touchModel;
+
   var state = GameState.running;
 
   // Scale the screenSize by 100 and set the gravity of 15
@@ -44,8 +41,8 @@ class MyGame extends Forge2DGame
       : super(
             zoom: 100,
             cameraComponent: CameraComponent.withFixedResolution(
-              width: screenSize.x,
-              height: screenSize.y,
+              width: GameConstants.screenSize.x,
+              height: GameConstants.screenSize.y,
             ),
             gravity: Vector2(0, 9.8));
 
@@ -65,10 +62,10 @@ class MyGame extends Forge2DGame
     world.add(hero);
 
     final worldBounds = Rectangle.fromLTRB(
-      worldSize.x / 2,
+      GameConstants.worldSize.x / 2,
       -double.infinity,
-      worldSize.x / 2,
-      worldSize.y / 2,
+      GameConstants.worldSize.x / 2,
+      GameConstants.worldSize.y / 2,
     );
     camera.follow(hero);
     camera.setBounds(worldBounds);
@@ -79,10 +76,10 @@ class MyGame extends Forge2DGame
     super.update(dt);
 
     if (state == GameState.running) {
-      if (generatedWorldHeight > hero.body.position.y - worldSize.y / 2) {
+      if (generatedWorldHeight > hero.body.position.y - GameConstants.worldSize.y / 2) {
         generateNextSectionOfWorld();
       }
-      final heroY = (hero.body.position.y - worldSize.y) * -1;
+      final heroY = (hero.body.position.y - GameConstants.worldSize.y) * -1;
 
       if (score < heroY) {
         score = heroY.toInt();
@@ -92,19 +89,23 @@ class MyGame extends Forge2DGame
         hero.hit();
       }
 
-      if (hero.state == HeroState.dead && (score - worldSize.y) > heroY) {
+      if (hero.state == HeroState.dead && (score - GameConstants.worldSize.y) > heroY) {
         state = GameState.gameOver;
         HighScores.saveNewScore(score);
         overlays.add('GameOverMenu');
+      }
+
+      if (touchModel?.isPressed ?? false) {
+        hero.directionSet(touchModel!.positionX);
       }
     }
   }
 
   bool isOutOfScreen(Vector2 position) {
-    final heroY = (hero.body.position.y - worldSize.y) * -1;
-    final otherY = (position.y - worldSize.y) * -1;
+    final heroY = (hero.body.position.y - GameConstants.worldSize.y) * -1;
+    final otherY = (position.y - GameConstants.worldSize.y) * -1;
 
-    return otherY < heroY - worldSize.y / 2;
+    return otherY < heroY - GameConstants.worldSize.y / 2;
 
     // final heroPosY = (hero.body.position.y - worldSize.y).abs();
     // final otherPosY = (position.y - worldSize.y).abs();
@@ -114,30 +115,30 @@ class MyGame extends Forge2DGame
   void generateNextSectionOfWorld() {
     for (int i = 0; i < 10; i++) {
       world.add(Platform(
-        x: worldSize.x * random.nextDouble(),
+        x: GameConstants.worldSize.x * random.nextDouble(),
         y: generatedWorldHeight,
       ));
       if (random.nextDouble() < .8) {
         world.add(Platform(
-          x: worldSize.x * random.nextDouble(),
+          x: GameConstants.worldSize.x * random.nextDouble(),
           y: generatedWorldHeight - 3 + (random.nextDouble() * 6),
         ));
       }
 
       if (random.nextBool()) {
         world.add(HearthEnemy(
-          x: worldSize.x * random.nextDouble(),
+          x: GameConstants.worldSize.x * random.nextDouble(),
           y: generatedWorldHeight - 1.5,
         ));
       } else if (random.nextDouble() < .2) {
         world.add(CloudEnemy(
-          x: worldSize.x * random.nextDouble(),
+          x: GameConstants.worldSize.x * random.nextDouble(),
           y: generatedWorldHeight - 1.5,
         ));
       }
       if (random.nextDouble() < .3) {
         world.add(PowerUp(
-          x: worldSize.x * random.nextDouble(),
+          x: GameConstants.worldSize.x * random.nextDouble(),
           y: generatedWorldHeight - 1.5,
         ));
         if (random.nextDouble() < 21.2) {
@@ -175,7 +176,7 @@ class MyGame extends Forge2DGame
     final rows = random.nextInt(15) + 1;
     final cols = random.nextInt(5) + 1;
 
-    final x = (worldSize.x - (Coin.size.x * cols)) * random.nextDouble() +
+    final x = (GameConstants.worldSize.x - (Coin.size.x * cols)) * random.nextDouble() +
         Coin.size.x / 2;
 
     for (int col = 0; col < cols; col++) {
@@ -191,7 +192,20 @@ class MyGame extends Forge2DGame
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
+    touchModel?.setPress(false);
     hero.fireBullet();
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    super.onLongTapDown(event);
+    touchModel = TouchModel(true, event.devicePosition.x);
+  }
+
+  @override
+  void onTapCancel(TapCancelEvent event) {
+    super.onTapCancel(event);
+    touchModel?.setPress(false);
   }
 
   void addBullets() {
