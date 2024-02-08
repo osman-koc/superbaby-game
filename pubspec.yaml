@@ -30,6 +30,7 @@ flutter:
     - assets/
     - assets/ui/
     - assets/lang/
+    - assets/images/
   fonts:
     - family: DaveysDoodleface
       fonts:
