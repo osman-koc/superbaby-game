@@ -12,9 +12,9 @@ import 'package:superbaby/ui/pause_menu.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
-
   await HighScores.load();
   await Assets.load();
+  
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,

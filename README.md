@@ -1,5 +1,7 @@
 # Flying Super Baby ("Uçan Süper Bebek")
 
+<img src="assets/images/logo.jpg" height="150" /> <img src="assets/ui/title_en.png" height="150">
+
 This game is Doodle Jump clone developed with Flutter.
 
 # Screenshots
