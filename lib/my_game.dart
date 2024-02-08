@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -76,7 +77,8 @@ class MyGame extends Forge2DGame
     super.update(dt);
 
     if (state == GameState.running) {
-      if (generatedWorldHeight > hero.body.position.y - GameConstants.worldSize.y / 2) {
+      if (generatedWorldHeight >
+          hero.body.position.y - GameConstants.worldSize.y / 2) {
         generateNextSectionOfWorld();
       }
       final heroY = (hero.body.position.y - GameConstants.worldSize.y) * -1;
@@ -89,7 +91,8 @@ class MyGame extends Forge2DGame
         hero.hit();
       }
 
-      if (hero.state == HeroState.dead && (score - GameConstants.worldSize.y) > heroY) {
+      if (hero.state == HeroState.dead &&
+          (score - GameConstants.worldSize.y) > heroY) {
         state = GameState.gameOver;
         HighScores.saveNewScore(score);
         overlays.add('GameOverMenu');
@@ -176,7 +179,8 @@ class MyGame extends Forge2DGame
     final rows = random.nextInt(15) + 1;
     final cols = random.nextInt(5) + 1;
 
-    final x = (GameConstants.worldSize.x - (Coin.size.x * cols)) * random.nextDouble() +
+    final x = (GameConstants.worldSize.x - (Coin.size.x * cols)) *
+            random.nextDouble() +
         Coin.size.x / 2;
 
     for (int col = 0; col < cols; col++) {
@@ -193,19 +197,23 @@ class MyGame extends Forge2DGame
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
     touchModel?.setPress(false);
+    hero.accelerationX = 0;
     hero.fireBullet();
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    super.onLongTapDown(event);
-    touchModel = TouchModel(true, event.devicePosition.x);
+    super.onTapDown(event);
+    if (event.deviceKind == PointerDeviceKind.touch) {
+      touchModel = TouchModel(true, event.localPosition.x);
+    }
   }
 
   @override
   void onTapCancel(TapCancelEvent event) {
     super.onTapCancel(event);
     touchModel?.setPress(false);
+    hero.accelerationX = 0;
   }
 
   void addBullets() {
