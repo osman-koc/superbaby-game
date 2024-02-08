@@ -168,7 +168,7 @@ class MyHero extends BodyComponent<MyGame>
       position.x = GameConstants.worldSize.x;
       body.setTransform(position, 0);
     } else if (positionCounter == 3) {
-      state = HeroState.dead;
+      hit();
     }
 
     if (state == HeroState.jump) {
@@ -291,6 +291,8 @@ class MyHero extends BodyComponent<MyGame>
   }
 
   void directionSet(double positionX) {
+    if (state == HeroState.dead) return;
+
     if (positionX > GameConstants.screenBeginX &&
         positionX < GameConstants.screenMiddleX) {
       accelerationX = -1;
