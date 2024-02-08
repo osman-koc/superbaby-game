@@ -1,8 +1,10 @@
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:superbaby/constants/app_settings.dart';
 import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/assets.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/helpers/target_platform.dart';
 import 'package:superbaby/my_game.dart';
 import 'package:superbaby/objects/hero.dart';
@@ -66,8 +68,12 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    totalBodies.text = 'Obje: ${game.world.physicsWorld.bodies.length}';
-    totalScore.text = 'Skor ${gameRef.score}';
+
+    String bodiesText = AppSettings.defaultContext?.translate.bodies ?? "Bodies";
+    String scoreText = AppSettings.defaultContext?.translate.score ?? "Score";
+
+    totalBodies.text = '$bodiesText: ${game.world.physicsWorld.bodies.length}';
+    totalScore.text = '$scoreText: ${gameRef.score}';
     totalCoins.text = 'x${gameRef.coins}';
     totalBullets.text = 'x${gameRef.bullets}';
 

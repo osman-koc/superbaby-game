@@ -1,6 +1,8 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:superbaby/constants/app_settings.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/main.dart';
 import 'package:superbaby/ui/leaderboards_screen.dart';
 import 'package:superbaby/ui/main_menu_screen.dart';
@@ -29,7 +31,10 @@ enum Routes {
       case Routes.leaderboard:
         return buildRoute(const LeaderboardScreen());
       default:
-        throw Exception('Route does not exists');
+        String errorMessage =
+            AppSettings.defaultContext?.translate.routeDoesNotExists ??
+                'Route does not exists';
+        throw Exception(errorMessage);
     }
   }
 }

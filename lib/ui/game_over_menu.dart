@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/helpers/high_scores.dart';
 import 'package:superbaby/my_game.dart';
 import 'package:superbaby/navigation/routes.dart';
@@ -26,8 +27,8 @@ class GameOverMenu extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: height * .15),
-                const MyText(
-                  'Oyun Bitti!',
+                MyText(
+                  context.translate.gameOver,
                   fontSize: 56,
                 ),
                 Table(
@@ -42,7 +43,7 @@ class GameOverMenu extends StatelessWidget {
                     TableRow(
                       children: [
                         const SizedBox(),
-                        const MyText('Skor'),
+                        MyText(context.translate.score),
                         MyText(game.score.toString()),
                         const SizedBox(),
                       ],
@@ -50,7 +51,7 @@ class GameOverMenu extends StatelessWidget {
                     TableRow(
                       children: [
                         const SizedBox(),
-                        const MyText('Yüksek Skor'),
+                        MyText(context.translate.bestScore),
                         MyText('${HighScores.highScores[0]}'),
                         const SizedBox(),
                       ],
@@ -59,12 +60,12 @@ class GameOverMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Tekrar',
+                  context.translate.tryAgain,
                   onPressed: () => context.pushAndRemoveUntil(Routes.game),
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Menü',
+                  context.translate.menu,
                   onPressed: () => context.pushAndRemoveUntil(Routes.main),
                 ),
               ],

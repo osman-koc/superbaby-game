@@ -1,6 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:superbaby/constants/app_settings.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/helpers/high_scores.dart';
 import 'package:superbaby/my_game.dart';
@@ -18,6 +19,9 @@ void main() async {
     const MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.routes,
+      supportedLocales: AppSettings.supportedLocales,
+      localizationsDelegates: AppSettings.localizationsDelegates,
+      localeResolutionCallback: AppSettings.localeResolutionCallback,
     ),
   );
 }
@@ -27,6 +31,7 @@ class MyGameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppSettings.defaultContext = context;
     return GameWidget(
       game: MyGame(),
       overlayBuilderMap: {

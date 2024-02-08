@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:superbaby/constants/assets_constants.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/helpers/high_scores.dart';
 import 'package:superbaby/navigation/routes.dart';
 import 'package:superbaby/ui/widgets/my_button.dart';
@@ -20,7 +22,7 @@ class MainMenuScreen extends StatelessWidget {
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/ui/background.png'),
+                image: AssetImage(AssetConstants.background),
                 fit: BoxFit.cover,
               ),
             ),
@@ -32,14 +34,14 @@ class MainMenuScreen extends StatelessWidget {
                     Positioned(
                       bottom: constrains.maxHeight * .25,
                       child: Image.asset(
-                        'assets/ui/heroJump.png',
+                        AssetConstants.heroJump,
                         scale: 1.25,
                       ),
                     ),
                     Positioned(
                       bottom: constrains.maxHeight * .60,
                       child: Image.asset(
-                        'assets/ui/LandPiece_DarkMulticolored.png',
+                        AssetConstants.landPieceDarkMulticolored,
                         scale: 1.25,
                       ),
                     ),
@@ -47,7 +49,7 @@ class MainMenuScreen extends StatelessWidget {
                       bottom: constrains.maxHeight * .05,
                       left: constrains.maxWidth * .2,
                       child: Image.asset(
-                        'assets/ui/BrokenLandPiece_Beige.png',
+                        AssetConstants.brokenLandPieceBeige,
                         scale: 1.25,
                       ),
                     ),
@@ -55,7 +57,7 @@ class MainMenuScreen extends StatelessWidget {
                       bottom: constrains.maxHeight * .3,
                       right: 0,
                       child: Image.asset(
-                        'assets/ui/LandPiece_DarkBlue.png',
+                        AssetConstants.landPieceDarkBlue,
                         scale: 1.5,
                       ),
                     ),
@@ -63,7 +65,7 @@ class MainMenuScreen extends StatelessWidget {
                       top: constrains.maxHeight * .3,
                       right: 0,
                       child: Image.asset(
-                        'assets/ui/HappyCloud.png',
+                        AssetConstants.happyCloud,
                         scale: 1.75,
                       ),
                     ),
@@ -71,9 +73,9 @@ class MainMenuScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const SizedBox(height: 24),
-                        Image.asset('assets/ui/title.png'),
+                        Image.asset(AssetConstants.title),
                         MyText(
-                          'En Yüksek Skor: ${HighScores.highScores[0]}',
+                          '${context.translate.bestScore}: ${HighScores.highScores[0]}',
                           fontSize: 26,
                         ),
                         Expanded(
@@ -81,19 +83,19 @@ class MainMenuScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               MyButton(
-                                'Oyna',
+                                context.translate.play,
                                 onPressed: () =>
                                     context.pushAndRemoveUntil(Routes.game),
                               ),
                               const SizedBox(height: 40),
                               MyButton(
-                                'Skorlar',
+                                context.translate.scores,
                                 onPressed: () =>
                                     context.push(Routes.leaderboard),
                               ),
                               const SizedBox(height: 40),
                               MyButton(
-                                'Çıkıs',
+                                context.translate.exit,
                                 onPressed: () {
                                   exit(0);
                                 },

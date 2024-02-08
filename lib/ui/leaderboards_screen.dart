@@ -1,6 +1,8 @@
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:superbaby/constants/assets.dart';
+import 'package:superbaby/constants/assets_constants.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/helpers/high_scores.dart';
 import 'package:superbaby/ui/widgets/my_text.dart';
 
@@ -17,7 +19,7 @@ class LeaderboardScreen extends StatelessWidget {
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/ui/background.png'),
+                image: AssetImage(AssetConstants.background),
                 fit: BoxFit.cover,
               ),
             ),
@@ -35,8 +37,8 @@ class LeaderboardScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const MyText(
-                  'Yüksek Skorlar',
+                MyText(
+                  context.translate.bestScores,
                   fontSize: 42,
                 ),
                 SizedBox(height: spacing),

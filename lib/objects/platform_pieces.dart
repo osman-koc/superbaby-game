@@ -1,6 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:superbaby/constants/app_settings.dart';
 import 'package:superbaby/constants/assets.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/my_game.dart';
 import 'package:superbaby/objects/platform.dart';
 
@@ -67,7 +69,10 @@ class PlatformPieces extends BodyComponent<MyGame> {
         }
         break;
       default:
-        throw ('Wrong platform type exception');
+        String errorMessage =
+            AppSettings.defaultContext?.translate.wrongPlatformTypeException ??
+                'Wrong platform type exception!';
+        throw (errorMessage);
     }
 
     add(

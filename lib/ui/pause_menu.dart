@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superbaby/extensions/app_lang.dart';
 import 'package:superbaby/my_game.dart';
 import 'package:superbaby/navigation/routes.dart';
 import 'package:superbaby/ui/widgets/my_button.dart';
@@ -25,13 +26,13 @@ class PauseMenu extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: height * .15),
-                const MyText(
-                  'Durdur',
+                MyText(
+                  context.translate.paused,
                   fontSize: 56,
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Devam et',
+                  context.translate.resume,
                   onPressed: () {
                     game.overlays.remove('PauseMenu');
                     game.paused = false;
@@ -39,7 +40,7 @@ class PauseMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 MyButton(
-                  'Menü',
+                  context.translate.menu,
                   onPressed: () => context.pushAndRemoveUntil(Routes.main),
                 ),
               ],

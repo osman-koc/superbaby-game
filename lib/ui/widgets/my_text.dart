@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superbaby/constants/app_font_styles.dart';
 
 class MyText extends StatelessWidget {
   final String text;
@@ -18,7 +19,7 @@ class MyText extends StatelessWidget {
         fontSize: fontSize,
         color: Colors.black,
         fontWeight: FontWeight.w800,
-        fontFamily: 'DaveysDoodleface',
+        fontFamily: AppFontStyles.daveysDoodleface,
       ),
     );
   }
