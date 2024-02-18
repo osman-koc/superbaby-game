@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/services.dart';
+import 'package:superbaby/constants/app_settings.dart';
 import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/helpers/target_platform.dart';
@@ -28,7 +29,7 @@ class MyHero extends BodyComponent<MyGame>
     with ContactCallbacks, KeyboardHandler {
   static final size = Vector2(.75, .80);
 
-  var state = HeroState.fall;
+  var hState = HeroState.fall;
 
   late final SpriteComponent fallComponent;
   late final SpriteComponent jumpComponent;
@@ -60,7 +61,7 @@ class MyHero extends BodyComponent<MyGame>
 
     if (isMobile || isWeb) {
       accelerometerSubscription = accelerometerEventStream().listen((event) {
-        accelerationX = (event.x * -1).clamp(-1, 1);
+        accelerationX = (event.x * -1).clamp(-0.5, 0.5);
       });
     }
 
@@ -81,15 +82,15 @@ class MyHero extends BodyComponent<MyGame>
   }
 
   void jump() {
-    if (state == HeroState.jump || state == HeroState.dead) return;
+    if (hState == HeroState.jump || hState == HeroState.dead) return;
     final velocity = body.linearVelocity;
     body.linearVelocity = Vector2(velocity.x, -7.5);
-    state = HeroState.jump;
+    hState = HeroState.jump;
   }
 
   void hit() {
     if (hasJetpack) return;
-    if (state == HeroState.dead) return;
+    if (hState == HeroState.dead) return;
 
     if (hasBubbleShield) {
       hasBubbleShield = false;
@@ -97,38 +98,38 @@ class MyHero extends BodyComponent<MyGame>
       return;
     }
 
-    state = HeroState.dead;
+    hState = HeroState.dead;
     body.setFixedRotation(false);
     body.applyAngularImpulse(2);
   }
 
   void takeJetpack() {
-    if (state == HeroState.dead) return;
+    if (hState == HeroState.dead) return;
     durationJetpack = 0;
     if (!hasJetpack) add(jetpackComponent);
     hasJetpack = true;
   }
 
   void takeBubbleShield() {
-    if (state == HeroState.dead) return;
+    if (hState == HeroState.dead) return;
     if (!hasBubbleShield) add(bubbleShieldComponent);
     hasBubbleShield = true;
   }
 
   void takeCoin() {
-    if (state == HeroState.dead) return;
+    if (hState == HeroState.dead) return;
     game.coins++;
     final velocity = body.linearVelocity;
     body.linearVelocity = Vector2(velocity.x, -8.5);
   }
 
   void takeBullet() {
-    if (state == HeroState.dead) return;
+    if (hState == HeroState.dead) return;
     game.bullets += 25;
   }
 
   void fireBullet() {
-    if (state == HeroState.dead) return;
+    if (hState == HeroState.dead) return;
     game.addBullets();
   }
 
@@ -139,14 +140,14 @@ class MyHero extends BodyComponent<MyGame>
     final velocity = body.linearVelocity;
     final position = body.position;
 
-    if (position.y == 8.975005841774795) {
+    if (position.y >= 8.97 && position.y <= 8.99) {
       positionCounter++;
     } else {
       positionCounter = 0;
     }
 
-    if (velocity.y > 0.1 && state != HeroState.dead) {
-      state = HeroState.fall;
+    if (velocity.y > 0.1 && hState != HeroState.dead) {
+      hState = HeroState.fall;
     }
 
     if (hasJetpack) {
@@ -171,11 +172,11 @@ class MyHero extends BodyComponent<MyGame>
       hit();
     }
 
-    if (state == HeroState.jump) {
+    if (hState == HeroState.jump) {
       _setComponent(jumpComponent);
-    } else if (state == HeroState.fall) {
+    } else if (hState == HeroState.fall) {
       _setComponent(fallComponent);
-    } else if (state == HeroState.dead) {
+    } else if (hState == HeroState.dead) {
       _setComponent(fallComponent);
     }
   }
@@ -201,7 +202,8 @@ class MyHero extends BodyComponent<MyGame>
   Body createBody() {
     final bodyDef = BodyDef(
       userData: this,
-      position: Vector2(GameConstants.worldSize.x / 2, GameConstants.worldSize.y - 0.5),
+      position: Vector2(
+          GameConstants.worldSize.x / 2, GameConstants.worldSize.y - 0.5),
       type: BodyType.dynamic,
     );
 
@@ -250,7 +252,7 @@ class MyHero extends BodyComponent<MyGame>
     }
 
     if (other is Platform) {
-      if (state == HeroState.fall && other.type.isBroken) {
+      if (hState == HeroState.fall && other.type.isBroken) {
         other.destroy = true;
       }
       jump();
@@ -271,9 +273,11 @@ class MyHero extends BodyComponent<MyGame>
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    if (keysPressed.contains(LogicalKeyboardKey.keyD)) {
+    if (keysPressed.contains(LogicalKeyboardKey.keyD) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
       accelerationX = 1;
-    } else if (keysPressed.contains(LogicalKeyboardKey.keyA)) {
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyA) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
       accelerationX = -1;
     } else {
       accelerationX = 0;
@@ -288,19 +292,5 @@ class MyHero extends BodyComponent<MyGame>
 
   void cancelSensor() {
     accelerometerSubscription?.cancel();
-  }
-
-  void directionSet(double positionX) {
-    if (state == HeroState.dead) return;
-
-    if (positionX > GameConstants.screenBeginX &&
-        positionX < GameConstants.screenMiddleX) {
-      accelerationX = -1;
-    } else if (positionX > GameConstants.screenMiddleX &&
-        positionX < GameConstants.screenEndX) {
-      accelerationX = 1;
-    } else {
-      accelerationX = 0;
-    }
   }
 }

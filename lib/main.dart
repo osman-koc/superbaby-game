@@ -14,7 +14,7 @@ void main() async {
   await Flame.device.fullScreen();
   await HighScores.load();
   await Assets.load();
-  
+
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -32,6 +32,10 @@ class MyGameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppSettings.defaultContext = context;
+    return getGameWidget();
+  }
+
+  GameWidget<MyGame> getGameWidget() {
     return GameWidget(
       game: MyGame(),
       overlayBuilderMap: {

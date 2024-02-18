@@ -68,7 +68,7 @@ class GameUI extends PositionComponent with HasGameRef<MyGame> {
   @override
   void update(double dt) {
     super.update(dt);
-
+    
     String bodiesText = AppSettings.defaultContext?.translate.bodies ?? "Bodies";
     String scoreText = AppSettings.defaultContext?.translate.score ?? "Score";
 

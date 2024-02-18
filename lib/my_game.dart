@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -9,7 +8,6 @@ import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/enums/game_state.dart';
 import 'package:superbaby/helpers/high_scores.dart';
-import 'package:superbaby/model/touch_model.dart';
 import 'package:superbaby/objects/background.dart';
 import 'package:superbaby/objects/bullet.dart';
 import 'package:superbaby/objects/cloud_enemy.dart';
@@ -33,8 +31,6 @@ class MyGame extends Forge2DGame
   int bullets = 0;
   double generatedWorldHeight = 6.7;
 
-  TouchModel? touchModel;
-
   var state = GameState.running;
 
   // Scale the screenSize by 100 and set the gravity of 15
@@ -50,7 +46,7 @@ class MyGame extends Forge2DGame
   @override
   Future<void> onLoad() async {
     hero = MyHero();
-
+  
     // Adds a black background to the viewport
     camera.backdrop.add(Background());
     camera.viewport.add(GameUI(hero));
@@ -91,15 +87,11 @@ class MyGame extends Forge2DGame
         hero.hit();
       }
 
-      if (hero.state == HeroState.dead &&
+      if (hero.hState == HeroState.dead &&
           (score - GameConstants.worldSize.y) > heroY) {
         state = GameState.gameOver;
         HighScores.saveNewScore(score);
         overlays.add('GameOverMenu');
-      }
-
-      if (touchModel?.isPressed ?? false) {
-        hero.directionSet(touchModel!.positionX);
       }
     }
   }
@@ -116,7 +108,7 @@ class MyGame extends Forge2DGame
   }
 
   void generateNextSectionOfWorld() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       world.add(Platform(
         x: GameConstants.worldSize.x * random.nextDouble(),
         y: generatedWorldHeight,
@@ -196,24 +188,7 @@ class MyGame extends Forge2DGame
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
-    touchModel?.setPress(false);
-    hero.accelerationX = 0;
     hero.fireBullet();
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    if (event.deviceKind == PointerDeviceKind.touch) {
-      touchModel = TouchModel(true, event.localPosition.x);
-    }
-  }
-
-  @override
-  void onTapCancel(TapCancelEvent event) {
-    super.onTapCancel(event);
-    touchModel?.setPress(false);
-    hero.accelerationX = 0;
   }
 
   void addBullets() {
