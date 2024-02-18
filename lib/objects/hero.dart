@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/services.dart';
-import 'package:superbaby/constants/app_settings.dart';
 import 'package:superbaby/constants/game_constants.dart';
 import 'package:superbaby/constants/assets.dart';
 import 'package:superbaby/helpers/target_platform.dart';
