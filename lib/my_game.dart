@@ -46,7 +46,7 @@ class MyGame extends Forge2DGame
   @override
   Future<void> onLoad() async {
     hero = MyHero();
-  
+
     // Adds a black background to the viewport
     camera.backdrop.add(Background());
     camera.viewport.add(GameUI(hero));
@@ -102,13 +102,13 @@ class MyGame extends Forge2DGame
 
     return otherY < heroY - GameConstants.worldSize.y / 2;
 
-    // final heroPosY = (hero.body.position.y - worldSize.y).abs();
-    // final otherPosY = (position.y - worldSize.y).abs();
-    // return otherPosY < heroPosY - worldSize.y / 2;
+    // final heroPosY = (hero.body.position.y - GameConstants.worldSize.y).abs();
+    // final otherPosY = (position.y - GameConstants.worldSize.y).abs();
+    // return otherPosY < heroPosY - GameConstants.worldSize.y / 2;
   }
 
   void generateNextSectionOfWorld() {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < GameConstants.dangerObjectCount; i++) {
       world.add(Platform(
         x: GameConstants.worldSize.x * random.nextDouble(),
         y: generatedWorldHeight,

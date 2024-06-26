@@ -14,7 +14,7 @@ import 'package:superbaby/objects/jetpack_group.dart';
 import 'package:superbaby/objects/lightning.dart';
 import 'package:superbaby/objects/platform.dart';
 import 'package:superbaby/objects/power_up.dart';
-import 'package:sensors_plus/sensors_plus.dart';
+//import 'package:sensors_plus/sensors_plus.dart';
 
 enum HeroState {
   jump,
@@ -49,9 +49,13 @@ class MyHero extends BodyComponent<MyGame>
 
   double durationJetpack = 0;
 
-  StreamSubscription? accelerometerSubscription;
+  //StreamSubscription? accelerometerSubscription;
+
+  double minPositionX = 0.4;
+  double maxPositionX = GameConstants.worldSize.x - 0.4;
 
   int positionCounter = 0;
+  double lastXPosition = 0;
 
   @override
   Future<void> onLoad() async {
@@ -59,9 +63,9 @@ class MyHero extends BodyComponent<MyGame>
     renderBody = false;
 
     if (isMobile || isWeb) {
-      accelerometerSubscription = accelerometerEventStream().listen((event) {
-        accelerationX = (event.x * -1).clamp(-0.5, 0.5);
-      });
+      // accelerometerSubscription = accelerometerEventStream().listen((event) {
+      //   accelerationX = (event.x * -1).clamp(-0.5, 0.5);
+      // });
     }
 
     fallComponent = SpriteComponent(
@@ -162,11 +166,15 @@ class MyHero extends BodyComponent<MyGame>
     body.linearVelocity = velocity;
 
     if (position.x > GameConstants.worldSize.x) {
-      position.x = 0;
+      //position.x = 0;
+      position.x = maxPositionX;
       body.setTransform(position, 0);
+      setDirection(-0.1);
     } else if (position.x < 0) {
-      position.x = GameConstants.worldSize.x;
+      //position.x = GameConstants.worldSize.x;
+      position.x = minPositionX;
       body.setTransform(position, 0);
+      setDirection(0.1);
     } else if (positionCounter == 3) {
       hit();
     }
@@ -290,6 +298,17 @@ class MyHero extends BodyComponent<MyGame>
   }
 
   void cancelSensor() {
-    accelerometerSubscription?.cancel();
+    //accelerometerSubscription?.cancel();
+  }
+
+  void setDirection(double deltaX /*double touchPositionX*/) {
+    //if (GameConstants.isOnTheLeft(touchPositionX)) {
+    if (deltaX < 0) {
+      accelerationX = (accelerationX - 0.2).clamp(-0.5, 0.5);
+    } else if (deltaX > 0) {
+      accelerationX = (accelerationX + 0.2).clamp(-0.5, 0.5);
+    } else {
+      accelerationX = 0;
+    }
   }
 }

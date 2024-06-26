@@ -1,5 +1,6 @@
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:superbaby/constants/app_settings.dart';
 import 'package:superbaby/constants/assets.dart';
@@ -32,12 +33,26 @@ class MyGameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppSettings.defaultContext = context;
-    return getGameWidget();
+    final myGame = MyGame();
+
+    return GestureDetector(
+      onPanUpdate: (details) {
+        var dxPosition = details.globalPosition.dx;
+        if (kDebugMode) {
+          print('====> $dxPosition - ${myGame.hero.accelerationX}');
+        }
+        myGame.hero.setDirection(details.delta.dx);
+      },
+      onLongPressEnd: (details) {
+        myGame.hero.accelerationX = 0;
+      },
+      child: getGameWidget(myGame),
+    );
   }
 
-  GameWidget<MyGame> getGameWidget() {
+  GameWidget<MyGame> getGameWidget(MyGame gameObj) {
     return GameWidget(
-      game: MyGame(),
+      game: gameObj,
       overlayBuilderMap: {
         'GameOverMenu': (context, MyGame game) {
           return GameOverMenu(game: game);

@@ -9,8 +9,8 @@ class AppSettings {
   static Locale? currentLocale;
 
   static const List<Locale> supportedLocales = [
-    Locale('en'),
     Locale('tr'),
+    Locale('en'),
   ];
 
   static const List<LocalizationsDelegate> localizationsDelegates = [
